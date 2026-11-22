@@ -106,7 +106,7 @@ If Homebrew is not already installed, install it first from <https://brew.sh/>.
 Install Python 3.9+ and the GTK3 runtime, then restart PowerShell and run:
 
 ```powershell
-winget install --id Python.Python.3.12 -e
+winget install --id Python.Python.3.12 -e --source winget
 winget install --id GtkD.GtkPlusRuntime.x64 -e --source winget
 
 # Restart PowerShell after installing either package.
