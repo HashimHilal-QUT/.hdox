@@ -1,0 +1,4 @@
+[Thumbnailer Entry]
+TryExec=hdox
+Exec=hdox thumbnail %i %o
+MimeType=application/vnd.hdox+zip

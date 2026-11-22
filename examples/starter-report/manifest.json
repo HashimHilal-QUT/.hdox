@@ -1,0 +1,19 @@
+{
+  "$schema": "https://hdox.org/schemas/v0.1/manifest.schema.json",
+  "hdox_version": "0.1.0",
+  "id": "urn:uuid:9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
+  "title": "Starter Report",
+  "authors": ["Jane Doe"],
+  "created_at": "2026-11-22T00:00:00Z",
+  "modified_at": "2026-11-22T00:00:00Z",
+  "language": "en",
+  "entrypoint": "index.html",
+  "page_setup": {"size": "A4", "orientation": "portrait", "margins": "20mm"},
+  "security": {"allow_scripts": false, "allow_external_network": false, "signed": false},
+  "ai_metadata": {
+    "summary": "An offline starter report.",
+    "keywords": ["hdox", "starter", "semantic-document"],
+    "reading_order": ["index.html"],
+    "token_estimate": 12
+  }
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/vnd.hdox+zip">
+    <comment>HDOX document</comment>
+    <magic priority="60"><match value="application/vnd.hdox+zip" type="string" offset="30"/></magic>
+    <glob pattern="*.hdox"/>
+  </mime-type>
+</mime-info>

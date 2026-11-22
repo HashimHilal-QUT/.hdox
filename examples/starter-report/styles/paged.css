@@ -1,0 +1,2 @@
+@page { size: A4; margin: 20mm; }
+main, article, section { break-inside: avoid; }
