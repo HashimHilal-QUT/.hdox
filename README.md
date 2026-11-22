@@ -62,8 +62,8 @@ Requires Python 3.9+.
 
 ```bash
 cd packages/cli-python
-pip install -e ".[pdf]"     # core + PDF export (WeasyPrint) and hybrid-PDF support (pypdf)
-# pip install -e .          # core only: pack / validate / llm-read / to-html / sign
+pip install -e .            # core: pack / validate / llm-read / to-html / sign
+pip install -e ".[pdf]"     # optional: PDF export (WeasyPrint) and hybrid-PDF support (pypdf)
 ```
 
 ### Windows (PowerShell)
@@ -75,8 +75,7 @@ py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 Set-Location packages\cli-python
-python -m pip install -e ".[pdf]"  # core + PDF export (WeasyPrint) and hybrid-PDF support (pypdf)
-# python -m pip install -e .       # core only
+python -m pip install -e .         # core: pack / validate / llm-read / to-html / sign
 ```
 
 If PowerShell blocks activation, allow scripts for the current user and retry:
@@ -84,6 +83,47 @@ If PowerShell blocks activation, allow scripts for the current user and retry:
 ```powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 .\.venv\Scripts\Activate.ps1
+```
+
+### Optional PDF export
+
+PDF export is optional. The core `.hdox`, HTML, validation, signing, and `.hdox`/HTML LLM-reading workflows do not require native PDF libraries.
+Installing `.[pdf]` adds WeasyPrint and pypdf. WeasyPrint uses native GTK/Pango/Cairo libraries on Windows.
+
+On Windows, install the GTK3 x64 runtime with Winget, close and reopen PowerShell, activate the virtual environment again, and install the PDF extra:
+
+```powershell
+winget install --id tschoonj.GTKForWindows -e --source winget
+```
+
+Close PowerShell completely, open a new one, then from the repository root:
+
+```powershell
+cd C:\Users\<username>\HDOX
+.\.venv\Scripts\Activate.ps1
+python -m pip install -e "packages\cli-python[pdf]"
+python -c "import weasyprint; print(weasyprint.__version__)"
+```
+
+If importing WeasyPrint still fails, locate the GTK DLL:
+
+```powershell
+Get-ChildItem "C:\Program Files" -Recurse -Filter libgobject-2.0-0.dll -ErrorAction SilentlyContinue
+```
+
+If the DLL exists but Python cannot find it, add its `bin` directory to `PATH` for the current PowerShell session:
+
+```powershell
+$env:PATH = "C:\Program Files\GTK3-Runtime Win64\bin;$env:PATH"
+python -c "import weasyprint; print(weasyprint.__version__)"
+```
+
+Then create and read a PDF:
+
+```powershell
+hdox build report.md -o report.pdf
+dir report.pdf
+hdox llm-read report.pdf
 ```
 
 ## 60-second tour
