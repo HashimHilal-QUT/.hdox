@@ -88,6 +88,8 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 
 ## 60-second tour
 
+### Bash
+
 ```bash
 # Write Markdown (YAML front matter optional) and build every output from it
 cat > report.md <<'MD'
@@ -103,6 +105,32 @@ Revenue grew **12%**.
 | ------ | ------ |
 | EMEA   | 9%     |
 MD
+
+hdox build report.md -o report.hdox     # the portable source of truth
+hdox build report.md -o report.pdf      # PDF with the .hdox embedded
+hdox build report.md -o report.html     # single self-contained HTML file
+
+hdox validate report.hdox               # container, manifest schema, links, safety
+hdox llm-read report.pdf                # Markdown for an LLM – works on .hdox and hybrid PDFs
+```
+
+### Windows (PowerShell)
+
+```powershell
+# Write Markdown (YAML front matter optional) and build every output from it
+@'
+---
+title: Quarterly Review
+authors: [Jane Doe]
+keywords: [quarterly, review]
+---
+# Executive summary
+Revenue grew **12%**.
+
+| Region | Growth |
+| ------ | ------ |
+| EMEA   | 9%     |
+'@ | Set-Content -Path report.md -Encoding utf8
 
 hdox build report.md -o report.hdox     # the portable source of truth
 hdox build report.md -o report.pdf      # PDF with the .hdox embedded
