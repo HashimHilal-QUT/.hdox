@@ -5,7 +5,7 @@ Thanks for helping! HDOX is early (v0.1), so there is real room to shape the for
 ## Setup (2 minutes)
 
 ```bash
-git clone <this repo> && cd HDOX
+git clone https://github.com/HashimHilal-QUT/HDOX && cd HDOX
 cd packages/cli-python
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
