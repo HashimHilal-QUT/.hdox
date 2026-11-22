@@ -101,9 +101,11 @@ Close PowerShell completely, open a new one, then from the repository root:
 ```powershell
 cd C:\Users\<username>\HDOX
 .\.venv\Scripts\Activate.ps1
-python -m pip install -e "packages\cli-python[pdf]"
+Set-Location packages\cli-python
+python -m pip install -e ".[pdf]"
+python -m pip show weasyprint
+# Expected version: 70.0
 python -c "import weasyprint; print(weasyprint.__version__)"
-# Expected: 70.0
 ```
 
 If importing WeasyPrint still fails, locate the GTK DLL:
@@ -118,6 +120,25 @@ If the DLL exists but Python cannot find it, add its `bin` directory to `PATH` f
 $env:PATH = "C:\Program Files\GTK3-Runtime Win64\bin;$env:PATH"
 python -c "import weasyprint; print(weasyprint.__version__)"
 ```
+
+If `python -m pip show weasyprint` prints `WARNING: Package(s) not found: weasyprint`, install the
+PDF extra from the virtual environment using the same Python interpreter that runs `hdox`:
+
+```powershell
+Set-Location C:\Users\<username>\HDOX\packages\cli-python
+python -m pip install --upgrade pip
+python -m pip install -e ".[pdf]"
+
+# These must show the venv Python and weasyprint 70.0
+python -c "import sys; print(sys.executable)"
+python -m pip show weasyprint
+python -c "import weasyprint; print(weasyprint.__version__)"
+```
+
+Do not use a plain `pip show` or `pip install` command here: depending on your PATH, they may
+belong to a different Python installation. `python -m pip` guarantees that the package is installed
+into the active virtual environment. After installation, reopen PowerShell or deactivate/reactivate
+the environment so `hdox` resolves to `.venv\Scripts\hdox.exe`.
 
 Then create and read a PDF:
 
