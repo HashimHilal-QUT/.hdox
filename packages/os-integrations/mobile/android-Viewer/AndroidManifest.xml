@@ -1,0 +1,14 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.hdox.viewer">
+  <application android:label="HDOX Viewer">
+    <activity android:name=".MainActivity" android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:mimeType="application/vnd.hdox+zip" android:scheme="content"/>
+        <data android:mimeType="application/vnd.hdox+zip" android:scheme="file"/>
+        <data android:pathPattern=".*\\.hdox"/>
+      </intent-filter>
+    </activity>
+  </application>
+</manifest>
