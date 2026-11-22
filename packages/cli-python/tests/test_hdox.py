@@ -333,6 +333,30 @@ def test_from_markdown(tmp_path):
     assert not (tmp_path / "d.project").exists()
 
 
+def test_llm_roundtrips_custom_frontmatter(tmp_path):
+    md = tmp_path / "report.md"
+    md.write_text(
+        "---\n"
+        "title: Quarterly Review\n"
+        "authors: [Jane Doe]\n"
+        "keywords: [quarterly, review]\n"
+        "custom_field: test123\n"
+        "---\n"
+        "\n"
+        "# Executive summary\n",
+        encoding="utf-8",
+    )
+    archive = from_markdown(md, tmp_path / "report.hdox")
+    extracted = to_markdown(archive)
+    import yaml
+    frontmatter = yaml.safe_load(extracted.split("---", 2)[1])
+    assert frontmatter["title"] == "Quarterly Review"
+    assert frontmatter["authors"] == ["Jane Doe"]
+    assert frontmatter["keywords"] == ["quarterly", "review"]
+    assert frontmatter["custom_field"] == "test123"
+    assert "# Executive summary" in extracted
+
+
 def test_from_markdown_title_fallbacks_and_no_clobber(tmp_path):
     keep = tmp_path / "d.project"
     keep.mkdir()
@@ -404,6 +428,30 @@ def test_build_variants(tmp_path):
     assert validate(build(proj, tmp_path / "p.hdox")).valid
     with pytest.raises(HDOXError):
         build(md, tmp_path / "o.docx")
+
+
+def test_starter_report_rich_html_project(tmp_path):
+    project = REPO / "examples" / "starter-report"
+    archive = build(project, tmp_path / "starter-report.hdox")
+    assert validate(archive).valid
+
+    html = build(project, tmp_path / "starter-report.html")
+    rendered = html.read_text(encoding="utf-8")
+    assert "HDOX Quarterly Review" in rendered
+    assert "Regional performance" in rendered
+    assert "data:image/svg+xml" in rendered
+
+    manifest, markdown, _ = __import__("hdox.llm", fromlist=["extract"]).extract(archive)
+    assert manifest["title"] == "HDOX Quarterly Review"
+    assert "North America" in markdown
+
+    pytest.importorskip("weasyprint")
+    pytest.importorskip("pypdf")
+    pdf = build(project, tmp_path / "starter-report.pdf")
+    assert pdf.read_bytes().startswith(b"%PDF-")
+    context = json.loads(to_llm_context(pdf))
+    assert context["manifest"]["title"] == "HDOX Quarterly Review"
+    assert "North America" in context["markdown"]
     with pytest.raises(HDOXError):
         build(tmp_path / "x.txt", tmp_path / "o.hdox")
 

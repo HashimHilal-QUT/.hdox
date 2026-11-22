@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HDOX Quarterly Review</title>
+  <style>
+@page {
+  size: A4;
+  margin: 14mm 16mm 16mm;
+}
+
+:root {
+  --ink: #172033;
+  --muted: #657189;
+  --line: #dde3ef;
+  --paper: #ffffff;
+  --navy: #172554;
+  --indigo: #464feb;
+  --cyan: #12b5cb;
+  --orange: #f59e0b;
+  --green: #07874c;
+  --lavender: #f1f3ff;
+}
+
+* { box-sizing: border-box; }
+
+html { color: var(--ink); background: #edf1f8; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Inter, system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-size: 10pt;
+  background: #edf1f8;
+}
+
+main {
+  max-width: 210mm;
+  margin: 0 auto;
+  background: var(--paper);
+  box-shadow: 0 12px 40px rgba(23, 32, 51, 0.12);
+}
+
+article { overflow: hidden; }
+
+section {
+  break-inside: avoid;
+  padding: 11mm 14mm;
+  border-bottom: 1px solid var(--line);
+}
+
+.cover {
+  min-height: 82mm;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 8mm;
+  padding: 16mm 14mm;
+  color: #fff;
+  background:
+    radial-gradient(circle at 88% 20%, rgba(18, 181, 203, 0.32), transparent 26%),
+    linear-gradient(135deg, #111b46 0%, #353dbe 70%, #464feb 100%);
+  break-after: page;
+}
+
+.cover-copy { max-width: 115mm; }
+
+.eyebrow,
+.kicker {
+  margin: 0 0 3mm;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 8pt;
+  font-weight: 800;
+}
+
+.eyebrow { color: #93e6f1; }
+
+.cover h1 {
+  margin: 0;
+  max-width: 118mm;
+  font-size: 32pt;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+
+.subtitle {
+  margin: 5mm 0 8mm;
+  max-width: 105mm;
+  color: #dfe4ff;
+  font-size: 12pt;
+}
+
+.cover-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7mm;
+  color: #dfe4ff;
+  font-size: 9pt;
+}
+
+.cover-meta b {
+  display: block;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 7pt;
+  letter-spacing: 0.08em;
+}
+
+.cover-art {
+  width: 100%;
+  height: 62mm;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 18px rgba(9, 16, 52, 0.22));
+}
+
+.section-heading { margin-bottom: 7mm; }
+
+.section-heading h2 {
+  margin: 0;
+  color: var(--navy);
+  font-size: 20pt;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.kicker { color: var(--indigo); }
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 8mm;
+  align-items: stretch;
+}
+
+.lead {
+  margin: 0;
+  padding: 5mm;
+  border-radius: 3mm;
+  background: var(--lavender);
+  color: #424d66;
+  font-size: 11pt;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3mm;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  min-height: 34mm;
+  padding: 4mm;
+  border: 1px solid var(--line);
+  border-radius: 3mm;
+  background: #fff;
+}
+
+.metric-value {
+  color: var(--navy);
+  font-size: 17pt;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.metric-label {
+  margin-top: 2mm;
+  color: var(--muted);
+  font-size: 8pt;
+}
+
+.metric-change {
+  margin-top: auto;
+  color: var(--green);
+  font-weight: 800;
+  font-size: 8pt;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--line);
+  border-radius: 3mm;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 3.2mm 3mm;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+th {
+  color: #fff;
+  background: var(--navy);
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+tbody tr:last-child td { border-bottom: 0; }
+th:last-child, td:last-child { border-right: 0; }
+tbody tr:nth-child(even) { background: #f8f9fc; }
+
+.badge {
+  display: inline-block;
+  min-width: 17mm;
+  padding: 1mm 2mm;
+  border-radius: 999px;
+  text-align: center;
+  font-size: 7.5pt;
+  font-weight: 800;
+}
+
+.badge.positive { color: #087847; background: #dcf6e8; }
+.badge.watch { color: #9a5b04; background: #fff0cf; }
+
+.insight-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4mm;
+}
+
+.insight-card {
+  min-height: 48mm;
+  padding: 5mm;
+  border: 1px solid var(--line);
+  border-top: 3mm solid var(--indigo);
+  border-radius: 3mm;
+  background: #fff;
+}
+
+.insight-card.accent-cyan { border-top-color: var(--cyan); }
+.insight-card.accent-orange { border-top-color: var(--orange); }
+
+.card-number {
+  margin: 0 0 3mm;
+  color: var(--muted);
+  font-size: 8pt;
+  font-weight: 800;
+}
+
+.insight-card h3 {
+  margin: 0 0 2mm;
+  color: var(--navy);
+  font-size: 12pt;
+}
+
+.insight-card p:last-child {
+  margin: 0;
+  color: #59647a;
+}
+
+.report-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 5mm 14mm;
+  color: #7b8498;
+  background: #f6f7fb;
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+@media print {
+  html, body { background: #fff; }
+  main { max-width: none; box-shadow: none; }
+  section { break-inside: avoid; }
+  .cover { break-after: page; }
+}
+
+@media (max-width: 700px) {
+  .cover, .summary-grid, .insight-grid { grid-template-columns: 1fr; }
+  .cover-art { max-height: 50mm; }
+  .metric-grid { grid-template-columns: 1fr; }
+  table { font-size: 8pt; }
+}
+
+</style>
+<script type="application/json" id="hdox-manifest">{"title": "HDOX Quarterly Review", "authors": ["Jane Doe"], "ai_metadata": {"summary": "Quarterly performance report for HDOX covering revenue, regional growth, customer retention, margins, enterprise adoption, product-led growth, and delivery efficiency.", "keywords": ["hdox", "quarterly", "revenue", "regional performance", "growth"], "reading_order": ["index.html"], "token_estimate": 157}}</script>
+</head>
+<body>
+  <main>
+    <article>
+      <header class="cover">
+        <div class="cover-copy">
+          <p class="eyebrow">Quarterly performance</p>
+          <h1>HDOX Quarterly Review</h1>
+          <p class="subtitle">A rich, portable document rendered from semantic HTML and CSS.</p>
+          <div class="cover-meta">
+            <span><b>Period</b> Q4 2026</span>
+            <span><b>Prepared by</b> Jane Doe</span>
+          </div>
+        </div>
+        <img class="cover-art" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgMzQwIiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+CiAgPHRpdGxlIGlkPSJ0aXRsZSI+UXVhcnRlcmx5IHJldmVudWUgZ3Jvd3RoPC90aXRsZT4KICA8ZGVzYyBpZD0iZGVzYyI+QSBjb2xvcmZ1bCBsaW5lIGFuZCBhcmVhIGNoYXJ0IHJpc2luZyBhY3Jvc3MgZm91ciBxdWFydGVycy48L2Rlc2M+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImFyZWEiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMTJiNWNiIiBzdG9wLW9wYWNpdHk9Ii43MiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMxMmI1Y2IiIHN0b3Atb3BhY2l0eT0iLjA0Ii8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGZpbHRlciBpZD0ic2hhZG93IiB4PSItMjAlIiB5PSItMjAlIiB3aWR0aD0iMTQwJSIgaGVpZ2h0PSIxNDAlIj4KICAgICAgPGZlRHJvcFNoYWRvdyBkeD0iMCIgZHk9IjgiIHN0ZERldmlhdGlvbj0iOCIgZmxvb2QtY29sb3I9IiMwYTEyMzgiIGZsb29kLW9wYWNpdHk9Ii4yNCIvPgogICAgPC9maWx0ZXI+CiAgPC9kZWZzPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDM2IDE4KSIgZmlsdGVyPSJ1cmwoI3NoYWRvdykiPgogICAgPHJlY3Qgd2lkdGg9IjQyOCIgaGVpZ2h0PSIyODYiIHJ4PSIyMiIgZmlsbD0iI2ZmZmZmZiIgZmlsbC1vcGFjaXR5PSIuOTgiLz4KICAgIDxnIHN0cm9rZT0iI2U0ZTdmMCIgc3Ryb2tlLXdpZHRoPSIxIj4KICAgICAgPGxpbmUgeDE9IjQ4IiB5MT0iNTQiIHgyPSIzOTIiIHkyPSI1NCIvPgogICAgICA8bGluZSB4MT0iNDgiIHkxPSIxMDQiIHgyPSIzOTIiIHkyPSIxMDQiLz4KICAgICAgPGxpbmUgeDE9IjQ4IiB5MT0iMTU0IiB4Mj0iMzkyIiB5Mj0iMTU0Ii8+CiAgICAgIDxsaW5lIHgxPSI0OCIgeTE9IjIwNCIgeDI9IjM5MiIgeTI9IjIwNCIvPgogICAgPC9nPgogICAgPHBhdGggZD0iTTQ4IDIwNCBDODIgMTk0IDEwMyAxODAgMTM0IDE3NCBDMTY5IDE2OCAxODkgMTQzIDIyMCAxMzYgQzI2MCAxMjYgMjg0IDk5IDMwNiA5MiBDMzM1IDgyIDM2MiA2MyAzOTIgNTQgTDM5MiAyMzggTDQ4IDIzOCBaIgogICAgICAgICAgZmlsbD0idXJsKCNhcmVhKSIvPgogICAgPHBhdGggZD0iTTQ4IDIwNCBDODIgMTk0IDEwMyAxODAgMTM0IDE3NCBDMTY5IDE2OCAxODkgMTQzIDIyMCAxMzYgQzI2MCAxMjYgMjg0IDk5IDMwNiA5MiBDMzM1IDgyIDM2MiA2MyAzOTIgNTQiCiAgICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9IiM0NjRmZWIiIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8ZyBmaWxsPSIjNDY0ZmViIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iNSI+CiAgICAgIDxjaXJjbGUgY3g9IjQ4IiBjeT0iMjA0IiByPSI5Ii8+CiAgICAgIDxjaXJjbGUgY3g9IjEzNCIgY3k9IjE3NCIgcj0iOSIvPgogICAgICA8Y2lyY2xlIGN4PSIyMjAiIGN5PSIxMzYiIHI9IjkiLz4KICAgICAgPGNpcmNsZSBjeD0iMzA2IiBjeT0iOTIiIHI9IjkiLz4KICAgICAgPGNpcmNsZSBjeD0iMzkyIiBjeT0iNTQiIHI9IjExIi8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjNjU3MTg5IiBmb250LWZhbWlseT0iU2Vnb2UgVUksIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPgogICAgICA8dGV4dCB4PSI0OCIgeT0iMjY0Ij5RMTwvdGV4dD4KICAgICAgPHRleHQgeD0iMTM0IiB5PSIyNjQiPlEyPC90ZXh0PgogICAgICA8dGV4dCB4PSIyMjAiIHk9IjI2NCI+UTM8L3RleHQ+CiAgICAgIDx0ZXh0IHg9IjMwNiIgeT0iMjY0Ij5RNDwvdGV4dD4KICAgIDwvZz4KICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI2NSA4MikiPgogICAgICA8cmVjdCB3aWR0aD0iMTEyIiBoZWlnaHQ9IjQyIiByeD0iMjEiIGZpbGw9IiMxNzI1NTQiLz4KICAgICAgPHRleHQgeD0iNTYiIHk9IjI3IiBmaWxsPSIjZmZmZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iU2Vnb2UgVUksIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtd2VpZ2h0PSI4MDAiPiQ0OC4yTTwvdGV4dD4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=" alt="Area chart showing quarterly growth">
+      </header>
+
+      <section class="executive">
+        <div class="section-heading">
+          <p class="kicker">01 / Executive summary</p>
+          <h2>Strong close, expanding momentum</h2>
+        </div>
+        <div class="summary-grid">
+          <p class="lead">The quarter finished above plan, supported by disciplined delivery and sustained customer growth across every major region.</p>
+          <div class="metric-grid">
+            <div class="metric">
+              <span class="metric-value">$48.2M</span>
+              <span class="metric-label">Quarterly revenue</span>
+              <span class="metric-change">+18.4%</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">94%</span>
+              <span class="metric-label">Customer retention</span>
+              <span class="metric-change">+2.1 pts</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">38%</span>
+              <span class="metric-label">Gross margin</span>
+              <span class="metric-change">+4.0 pts</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-heading">
+          <p class="kicker">02 / Regional performance</p>
+          <h2>Balanced growth across markets</h2>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Region</th>
+              <th>Revenue</th>
+              <th>YoY growth</th>
+              <th>Target</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>North America</td>
+              <td>$18.6M</td>
+              <td>21.2%</td>
+              <td>$17.8M</td>
+              <td><span class="badge positive">Ahead</span></td>
+            </tr>
+            <tr>
+              <td>EMEA</td>
+              <td>$14.1M</td>
+              <td>16.8%</td>
+              <td>$13.5M</td>
+              <td><span class="badge positive">Ahead</span></td>
+            </tr>
+            <tr>
+              <td>Asia Pacific</td>
+              <td>$9.8M</td>
+              <td>19.4%</td>
+              <td>$9.6M</td>
+              <td><span class="badge positive">Ahead</span></td>
+            </tr>
+            <tr>
+              <td>Latin America</td>
+              <td>$5.7M</td>
+              <td>11.6%</td>
+              <td>$5.9M</td>
+              <td><span class="badge watch">Watch</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="insights">
+        <div class="section-heading">
+          <p class="kicker">03 / Strategic signals</p>
+          <h2>What changed this quarter</h2>
+        </div>
+        <div class="insight-grid">
+          <article class="insight-card accent-indigo">
+            <p class="card-number">01</p>
+            <h3>Enterprise adoption</h3>
+            <p>Large-account expansion contributed 43% of new revenue, with a 112-day average sales cycle.</p>
+          </article>
+          <article class="insight-card accent-cyan">
+            <p class="card-number">02</p>
+            <h3>Product-led growth</h3>
+            <p>Self-service upgrades grew 29%, reducing acquisition cost while improving customer activation.</p>
+          </article>
+          <article class="insight-card accent-orange">
+            <p class="card-number">03</p>
+            <h3>Delivery efficiency</h3>
+            <p>Automation initiatives shortened release cycles by 21% and improved forecast reliability.</p>
+          </article>
+        </div>
+      </section>
+
+      <footer class="report-footer">
+        <span>HDOX Quarterly Review</span>
+        <span>Confidential · Q4 2026</span>
+      </footer>
+    </article>
+  </main>
+</body>
+</html>

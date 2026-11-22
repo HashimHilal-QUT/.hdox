@@ -33,11 +33,11 @@ print(to_markdown("report.hdox"))      # headings, tables, lists – intact, rea
 ## How it works
 
 ```text
- write                      build                         everyone gets what they need
-┌──────────────┐   hdox   ┌──────────────┐   ┌─ report.pdf   universal viewing, printing
-│ report.md    │ ───────▶ │ report.hdox  │ ──┼─ report.html  one file, opens in any browser
-│ or HTML+CSS  │          │ (ZIP of text)│   └─ llm-read     Markdown + JSON-LD for AI agents
-└──────────────┘          └──────────────┘
+ write                       build                         everyone gets what they need
+┌──────────────┐   hdox    ┌──────────────┐   ┌─ starter-report.pdf   universal viewing, printing
+│ HTML + CSS  │ ───────▶  │ starter-report│ ──┼─ starter-report.html  one file, opens in any browser
+│ rich sample  │           │ .hdox (ZIP) │   └─ llm-read             Markdown + JSON-LD for AI agents
+└──────────────┘           └──────────────┘
 ```
 
 A `.hdox` is a ZIP with a `mimetype` marker, a `manifest.json`, and an HTML entrypoint:
@@ -56,99 +56,141 @@ opens it; `hdox llm-read report.pdf` pulls the structured HTML back out. PDF for
 
 ## Install
 
-Requires Python 3.9+.
+Requires Python 3.9 or newer. The following setup installs the core package, PDF renderer,
+PDF attachment support, and the rich starter-report dependencies in an isolated virtual environment.
 
-### Linux and macOS
+### Linux
+
+Ubuntu/Debian:
 
 ```bash
+sudo apt update
+sudo apt install -y python3 python3-pip python3-venv libpango-1.0-0 libpangocairo-1.0-0 libcairo2
+cd /path/to/HDOX
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
 cd packages/cli-python
-pip install -e .            # core: pack / validate / llm-read / to-html / sign
-pip install -e ".[pdf]"     # optional: PDF export (WeasyPrint) and hybrid-PDF support (pypdf)
+python -m pip install -e ".[pdf,dev]"
+cd ../..
 ```
+
+Fedora:
+
+```bash
+sudo dnf install -y python3 python3-pip pango cairo
+cd /path/to/HDOX
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e "./packages/cli-python[pdf,dev]"
+```
+
+### macOS
+
+Install Python and Pango, then install HDOX in a virtual environment:
+
+```bash
+brew install python pango cairo
+cd /path/to/HDOX
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e "./packages/cli-python[pdf,dev]"
+```
+
+If Homebrew is not already installed, install it first from <https://brew.sh/>.
 
 ### Windows (PowerShell)
 
-From the repository root:
+Install Python 3.9+ and the GTK3 runtime, then restart PowerShell and run:
 
 ```powershell
+winget install --id Python.Python.3.12 -e
+winget install --id GtkD.GtkPlusRuntime.x64 -e --source winget
+
+# Restart PowerShell after installing either package.
+cd C:\path\to\HDOX
 py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-Set-Location packages\cli-python
-python -m pip install -e .         # core: pack / validate / llm-read / to-html / sign
+python -m pip install -e ".\packages\cli-python[pdf,dev]"
 ```
 
-If PowerShell blocks activation, allow scripts for the current user and retry:
+If PowerShell blocks virtual-environment activation:
 
 ```powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 .\.venv\Scripts\Activate.ps1
 ```
 
-### Optional PDF export
+### Verify every dependency
 
-PDF export is optional. The core `.hdox`, HTML, validation, signing, and `.hdox`/HTML LLM-reading workflows do not require native PDF libraries.
-Installing `.[pdf]` adds WeasyPrint 70.0 and pypdf. WeasyPrint uses native GTK/Pango/Cairo libraries on Windows.
+Run the same verification on Linux, macOS, and Windows:
 
-On Windows, install the GTK3 x64 runtime with Winget, close and reopen PowerShell, activate the virtual environment again, and install the PDF extra:
-
-```powershell
-winget install --id GtkD.GtkPlusRuntime.x64 -e --source winget
+```text
+python -c "import sys, markdown, yaml, jsonschema, cryptography, weasyprint, pypdf; print(sys.executable); print('dependencies ready')"
+python -m pip show hdox weasyprint pypdf
+hdox --version
 ```
 
-Close PowerShell completely, open a new one, then from the repository root:
+Always use `python -m pip` inside the active virtual environment. This ensures packages are
+installed for the same Python interpreter used to launch `hdox`.
+
+## Cross-platform universal test
+
+The repository includes a complete rich HTML/CSS sample at
+[`examples/starter-report`](examples/starter-report). It contains a colorful cover,
+an SVG chart, metrics, regional tables, print styling, and system-font typography.
+Build it on Windows, Linux, or macOS and compare the generated formats.
+
+### Linux and macOS
+
+```bash
+source .venv/bin/activate
+
+hdox build examples/starter-report -o examples/starter-report/starter-report.hdox
+hdox build examples/starter-report -o examples/starter-report/starter-report.html
+hdox build examples/starter-report -o examples/starter-report/starter-report.pdf
+
+hdox validate examples/starter-report/starter-report.hdox
+hdox llm-read examples/starter-report/starter-report.hdox
+hdox llm-read examples/starter-report/starter-report.pdf
+```
+
+Open the generated PDF with the platform viewer:
+
+```bash
+# macOS
+open examples/starter-report/starter-report.pdf
+
+# Linux
+xdg-open examples/starter-report/starter-report.pdf
+```
+
+### Windows (PowerShell)
 
 ```powershell
-cd C:\Users\<username>\HDOX
 .\.venv\Scripts\Activate.ps1
-Set-Location packages\cli-python
-python -m pip install -e ".[pdf]"
-python -m pip show weasyprint
-# Expected version: 70.0
-python -c "import weasyprint; print(weasyprint.__version__)"
+
+hdox build examples\starter-report -o examples\starter-report\starter-report.hdox
+hdox build examples\starter-report -o examples\starter-report\starter-report.html
+hdox build examples\starter-report -o examples\starter-report\starter-report.pdf
+
+hdox validate examples\starter-report\starter-report.hdox
+hdox llm-read examples\starter-report\starter-report.hdox
+hdox llm-read examples\starter-report\starter-report.pdf
+
+Start-Process examples\starter-report\starter-report.pdf
+Start-Process examples\starter-report\starter-report.html
 ```
 
-If importing WeasyPrint still fails, locate the GTK DLL:
+The result demonstrates that the same rich HTML/CSS source produces:
 
-```powershell
-Get-ChildItem "C:\Program Files" -Recurse -Filter libgobject-2.0-0.dll -ErrorAction SilentlyContinue
-```
-
-If the DLL exists but Python cannot find it, add its `bin` directory to `PATH` for the current PowerShell session:
-
-```powershell
-$env:PATH = "C:\Program Files\GTK3-Runtime Win64\bin;$env:PATH"
-python -c "import weasyprint; print(weasyprint.__version__)"
-```
-
-If `python -m pip show weasyprint` prints `WARNING: Package(s) not found: weasyprint`, install the
-PDF extra from the virtual environment using the same Python interpreter that runs `hdox`:
-
-```powershell
-Set-Location C:\Users\<username>\HDOX\packages\cli-python
-python -m pip install --upgrade pip
-python -m pip install -e ".[pdf]"
-
-# These must show the venv Python and weasyprint 70.0
-python -c "import sys; print(sys.executable)"
-python -m pip show weasyprint
-python -c "import weasyprint; print(weasyprint.__version__)"
-```
-
-Do not use a plain `pip show` or `pip install` command here: depending on your PATH, they may
-belong to a different Python installation. `python -m pip` guarantees that the package is installed
-into the active virtual environment. After installation, reopen PowerShell or deactivate/reactivate
-the environment so `hdox` resolves to `.venv\Scripts\hdox.exe`.
-
-Then create and read a PDF:
-
-```powershell
-hdox build report.md -o report.pdf
-dir report.pdf
-hdox llm-read report.pdf
-```
-
-The PDF is a hybrid PDF: it remains viewable in any PDF reader and carries the embedded `.hdox` source for `hdox llm-read`.
+- **`.hdox`**: portable semantic HTML/CSS, manifest, SVG asset, and JSON metadata in one file
+- **PDF**: printable A4 output with the source `.hdox` attached for AI round-tripping
+- **HTML**: self-contained browser output with CSS and the SVG chart inlined
+- **LLM read**: structured Markdown from both `.hdox` and the hybrid PDF
 
 ## 60-second tour
 
@@ -282,7 +324,7 @@ Found a bug? Open an issue with the smallest `.hdox` (or Markdown) that reproduc
 ## Development
 
 ```bash
-cd packages/cli-python && pip install -e ".[dev]" && pytest      # 46 tests
+cd packages/cli-python && python -m pip install -e ".[dev]" && pytest # 48 tests
 cd packages/sdk-ts && npm ci && npm run build
 ```
 
@@ -294,6 +336,6 @@ packages/cli-python/       Python library, CLI, converters, MCP server, tests
 packages/sdk-ts/           TypeScript reader, viewer, LLM context
 packages/web-viewer/       drag-and-drop browser viewer
 packages/os-integrations/  OS preview/association scaffolding
-examples/starter-report/   minimal project
+examples/starter-report/   rich HTML/CSS project with generated HDOX, HTML, and hybrid PDF
 spec/                      specification + manifest schema
 ```

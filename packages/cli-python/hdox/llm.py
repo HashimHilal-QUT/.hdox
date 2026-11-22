@@ -227,14 +227,24 @@ def extract(source: str | Path) -> tuple[dict, str, list[dict]]:
 
 def to_markdown(source: str | Path) -> str:
     manifest, text, _ = extract(source)
-    meta = {
-        "title": manifest.get("title", ""),
-        "authors": manifest.get("authors", []),
-        "language": manifest.get("language", "en"),
+    meta = {}
+    reserved = {
+        "$schema", "hdox_version", "id", "created_at", "modified_at", "entrypoint",
+        "page_setup", "security", "ai_metadata",
     }
-    keywords = (manifest.get("ai_metadata") or {}).get("keywords") or []
-    if keywords:
-        meta["keywords"] = keywords
+    for key, value in manifest.items():
+        if key not in reserved:
+            meta[key] = value
+
+    meta.setdefault("title", manifest.get("title", ""))
+    meta.setdefault("authors", manifest.get("authors", []))
+    meta.setdefault("language", manifest.get("language", "en"))
+    ai_metadata = manifest.get("ai_metadata") or {}
+    if ai_metadata.get("keywords"):
+        meta.setdefault("keywords", ai_metadata["keywords"])
+    if ai_metadata.get("summary"):
+        meta.setdefault("summary", ai_metadata["summary"])
+
     front = "\n".join(f"{k}: {json.dumps(v, ensure_ascii=False)}" for k, v in meta.items())
     return f"---\n{front}\n---\n\n{text}\n"
 

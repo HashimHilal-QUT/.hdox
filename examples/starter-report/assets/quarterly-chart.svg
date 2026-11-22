@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 340" role="img" aria-labelledby="title desc">
+  <title id="title">Quarterly revenue growth</title>
+  <desc id="desc">A colorful line and area chart rising across four quarters.</desc>
+  <defs>
+    <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#12b5cb" stop-opacity=".72"/>
+      <stop offset="1" stop-color="#12b5cb" stop-opacity=".04"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#0a1238" flood-opacity=".24"/>
+    </filter>
+  </defs>
+  <g transform="translate(36 18)" filter="url(#shadow)">
+    <rect width="428" height="286" rx="22" fill="#ffffff" fill-opacity=".98"/>
+    <g stroke="#e4e7f0" stroke-width="1">
+      <line x1="48" y1="54" x2="392" y2="54"/>
+      <line x1="48" y1="104" x2="392" y2="104"/>
+      <line x1="48" y1="154" x2="392" y2="154"/>
+      <line x1="48" y1="204" x2="392" y2="204"/>
+    </g>
+    <path d="M48 204 C82 194 103 180 134 174 C169 168 189 143 220 136 C260 126 284 99 306 92 C335 82 362 63 392 54 L392 238 L48 238 Z"
+          fill="url(#area)"/>
+    <path d="M48 204 C82 194 103 180 134 174 C169 168 189 143 220 136 C260 126 284 99 306 92 C335 82 362 63 392 54"
+          fill="none" stroke="#464feb" stroke-width="7" stroke-linecap="round"/>
+    <g fill="#464feb" stroke="#ffffff" stroke-width="5">
+      <circle cx="48" cy="204" r="9"/>
+      <circle cx="134" cy="174" r="9"/>
+      <circle cx="220" cy="136" r="9"/>
+      <circle cx="306" cy="92" r="9"/>
+      <circle cx="392" cy="54" r="11"/>
+    </g>
+    <g fill="#657189" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" text-anchor="middle">
+      <text x="48" y="264">Q1</text>
+      <text x="134" y="264">Q2</text>
+      <text x="220" y="264">Q3</text>
+      <text x="306" y="264">Q4</text>
+    </g>
+    <g transform="translate(265 82)">
+      <rect width="112" height="42" rx="21" fill="#172554"/>
+      <text x="56" y="27" fill="#ffffff" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="16" font-weight="800">$48.2M</text>
+    </g>
+  </g>
+</svg>
