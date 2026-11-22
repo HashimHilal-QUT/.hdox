@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hdox.org/schemas/v0.1/manifest.schema.json",
+  "type": "object",
+  "required": ["$schema", "hdox_version", "id", "title", "authors", "created_at", "modified_at", "language", "entrypoint", "page_setup", "security", "ai_metadata"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "hdox_version": {"const": "0.1.0"},
+    "id": {"type": "string"},
+    "title": {"type": "string"},
+    "authors": {"type": "array", "items": {"type": "string"}},
+    "created_at": {"type": "string"},
+    "modified_at": {"type": "string"},
+    "language": {"type": "string"},
+    "entrypoint": {"type": "string"},
+    "page_setup": {
+      "type": "object",
+      "required": ["size", "orientation", "margins"],
+      "properties": {
+        "size": {"type": "string"},
+        "orientation": {"enum": ["portrait", "landscape"]},
+        "margins": {"type": "string"}
+      }
+    },
+    "security": {
+      "type": "object",
+      "required": ["allow_scripts", "allow_external_network", "signed"],
+      "properties": {
+        "allow_scripts": {"type": "boolean"},
+        "allow_external_network": {"type": "boolean"},
+        "signed": {"type": "boolean"}
+      }
+    },
+    "ai_metadata": {
+      "type": "object",
+      "required": ["summary", "keywords", "reading_order", "token_estimate"],
+      "properties": {
+        "summary": {"type": "string"},
+        "keywords": {"type": "array", "items": {"type": "string"}},
+        "reading_order": {"type": "array", "items": {"type": "string"}},
+        "token_estimate": {"type": "integer", "minimum": 0}
+      }
+    }
+  },
+  "additionalProperties": true
+}
