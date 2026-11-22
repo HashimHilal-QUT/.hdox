@@ -58,10 +58,32 @@ opens it; `hdox llm-read report.pdf` pulls the structured HTML back out. PDF for
 
 Requires Python 3.9+.
 
+### Linux and macOS
+
 ```bash
 cd packages/cli-python
 pip install -e ".[pdf]"     # core + PDF export (WeasyPrint) and hybrid-PDF support (pypdf)
 # pip install -e .          # core only: pack / validate / llm-read / to-html / sign
+```
+
+### Windows (PowerShell)
+
+From the repository root:
+
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+Set-Location packages\cli-python
+python -m pip install -e ".[pdf]"  # core + PDF export (WeasyPrint) and hybrid-PDF support (pypdf)
+# python -m pip install -e .       # core only
+```
+
+If PowerShell blocks activation, allow scripts for the current user and retry:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+.\.venv\Scripts\Activate.ps1
 ```
 
 ## 60-second tour
