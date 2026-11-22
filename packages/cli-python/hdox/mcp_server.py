@@ -49,7 +49,7 @@ def handle(request: dict) -> dict | None:
 
     if method == "initialize":
         return ok({"protocolVersion": PROTOCOL_VERSION, "capabilities": {"tools": {}},
-                   "serverInfo": {"name": "hdox", "version": "0.1.0"}})
+                   "serverInfo": {"name": "hdox", "version": "1.0.0"}})
     if method == "ping":
         return ok({})
     if method == "tools/list":

@@ -288,7 +288,7 @@ def test_markdown_extraction(tmp_path):
 def test_llm_json_context(tmp_path):
     ctx = json.loads(to_llm_context(make(tmp_path, HTML, extra={"a.png": b"x"})))
     assert ctx["json_ld"] == [{"@type": "Report", "name": "Q"}]
-    assert ctx["manifest"]["hdox_version"] == "0.1.0" and "Heading" in ctx["markdown"]
+    assert ctx["manifest"]["hdox_version"] == "1.0.0" and "Heading" in ctx["markdown"]
 
 
 def test_frontmatter_is_valid_yaml(tmp_path):
@@ -363,10 +363,32 @@ def test_to_html_is_self_contained(tmp_path):
 def test_to_pdf_and_embed_roundtrip(tmp_path):
     pytest.importorskip("weasyprint")
     pytest.importorskip("pypdf")
-    a = make(tmp_path, "<h1>Round Trip</h1><p>Embedded source text</p>")
+    md = tmp_path / "round-trip.md"
+    md.write_text(
+        "---\n"
+        "title: Quarterly Review\n"
+        "authors: [Jane Doe]\n"
+        "keywords: [quarterly, review]\n"
+        "customer: ACME\n"
+        "---\n"
+        "# Executive summary\n"
+        "Revenue grew **12%**.\n",
+        encoding="utf-8",
+    )
+    a = from_markdown(md, tmp_path / "round-trip.hdox")
     pdf = to_pdf(a, tmp_path / "o.pdf", embed=True)
     assert pdf.read_bytes().startswith(b"%PDF-")
-    assert "Embedded source text" in to_markdown(pdf)  # AI reads HTML source out of the PDF
+    extracted = to_markdown(pdf)
+    assert 'title: "Quarterly Review"' in extracted
+    assert '"Jane Doe"' in extracted
+    assert '"quarterly"' in extracted and '"review"' in extracted
+    assert "# Executive summary" in extracted
+    assert "Revenue grew **12%**." in extracted
+    context = json.loads(to_llm_context(pdf))
+    assert context["manifest"]["title"] == "Quarterly Review"
+    assert context["manifest"]["authors"] == ["Jane Doe"]
+    assert context["manifest"]["ai_metadata"]["keywords"] == ["quarterly", "review"]
+    assert context["manifest"]["customer"] == "ACME"
     plain = to_pdf(a, tmp_path / "p.pdf")
     with pytest.raises(HDOXError, match="no embedded"):
         to_markdown(plain)

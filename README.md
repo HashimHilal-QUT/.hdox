@@ -7,7 +7,7 @@
 format packs it into a single portable file that renders the same everywhere, prints like a PDF, and gives
 AI agents the clean semantic source instead of a pile of positioned glyphs.
 
-> **Status:** v0.1 reference implementation · MIT licensed · contributions welcome – see [Contribute](#contribute).
+> **Status:** v1.0.0 reference implementation · MIT licensed · contributions welcome – see [Contribute](#contribute).
 
 **Why does this exist?** PDFs are great to read and terrible to parse: LLMs and scrapers get scrambled text, lost tables
 and no structure. HTML is great to parse but isn't a single, printable, signable file. `.hdox` is a thin, open
@@ -88,7 +88,7 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 ### Optional PDF export
 
 PDF export is optional. The core `.hdox`, HTML, validation, signing, and `.hdox`/HTML LLM-reading workflows do not require native PDF libraries.
-Installing `.[pdf]` adds WeasyPrint and pypdf. WeasyPrint uses native GTK/Pango/Cairo libraries on Windows.
+Installing `.[pdf]` adds WeasyPrint 70.0 and pypdf. WeasyPrint uses native GTK/Pango/Cairo libraries on Windows.
 
 On Windows, install the GTK3 x64 runtime with Winget, close and reopen PowerShell, activate the virtual environment again, and install the PDF extra:
 
@@ -103,6 +103,7 @@ cd C:\Users\<username>\HDOX
 .\.venv\Scripts\Activate.ps1
 python -m pip install -e "packages\cli-python[pdf]"
 python -c "import weasyprint; print(weasyprint.__version__)"
+# Expected: 70.0
 ```
 
 If importing WeasyPrint still fails, locate the GTK DLL:
@@ -125,6 +126,8 @@ hdox build report.md -o report.pdf
 dir report.pdf
 hdox llm-read report.pdf
 ```
+
+The PDF is a hybrid PDF: it remains viewable in any PDF reader and carries the embedded `.hdox` source for `hdox llm-read`.
 
 ## 60-second tour
 
@@ -151,6 +154,7 @@ hdox build report.md -o report.pdf      # PDF with the .hdox embedded
 hdox build report.md -o report.html     # single self-contained HTML file
 
 hdox validate report.hdox               # container, manifest schema, links, safety
+hdox llm-read report.hdox               # Markdown from the portable source
 hdox llm-read report.pdf                # Markdown for an LLM – works on .hdox and hybrid PDFs
 ```
 
@@ -177,6 +181,7 @@ hdox build report.md -o report.pdf      # PDF with the .hdox embedded
 hdox build report.md -o report.html     # single self-contained HTML file
 
 hdox validate report.hdox               # container, manifest schema, links, safety
+hdox llm-read report.hdox               # Markdown from the portable source
 hdox llm-read report.pdf                # Markdown for an LLM – works on .hdox and hybrid PDFs
 ```
 
@@ -203,7 +208,7 @@ Python API: `from hdox import pack, validate, to_markdown, to_llm_context, chunk
 
 ## Why it is safe to open
 
-- No script execution and no network access in v0.1; the TypeScript viewer strips scripts and sandboxes the iframe.
+- No script execution and no network access in v1.0.0; the TypeScript viewer strips scripts and sandboxes the iframe.
 - Resources must live inside the archive; `data:` URIs only for images/fonts. Hyperlinks (`https:`, `mailto:`) are fine – they load nothing.
 - Archive paths are normalised and checked; symlinks, duplicates, traversal and oversized archives are rejected.
 - Optional Ed25519 signing, with public-key pinning on verify.
@@ -227,7 +232,7 @@ Python API: `from hdox import pack, validate, to_markdown, to_llm_context, chunk
 
 ## Status and roadmap
 
-v0.1 is a working reference implementation, not a finished standard. Implemented and tested: container, manifest schema,
+v1.0.0 is a working reference implementation. Implemented and tested: container, manifest schema,
 validator, Markdown import, PDF/HTML export, hybrid PDF, LLM extraction, MCP server, signing. Not yet there:
 native OS preview handlers (scaffolds only), in-place section editing, a live-reload `hdox watch`,
 and Python-side CSS paged-media features beyond what WeasyPrint/Chromium support.

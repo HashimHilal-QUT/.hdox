@@ -22,7 +22,7 @@ export function readHDOX(bytes: Uint8Array): HDOXArchive {
   }
   const manifest = JSON.parse(text(files["manifest.json"]));
   if (manifest.security?.allow_external_network) {
-    throw new Error("External network access is not allowed in HDOX v0.1");
+    throw new Error("External network access is not allowed in HDOX v1.0.0");
   }
   return { manifest, files, html: text(files["index.html"]) };
 }

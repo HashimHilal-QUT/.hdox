@@ -3,7 +3,7 @@ from .core import (
 )
 from .llm import chunk_markdown, to_llm_context, to_markdown
 
-__version__ = "0.1.0"
+__version__ = "1.0.0"
 
 __all__ = [
     "HDOXError", "ValidationResult", "init", "pack", "unpack", "validate",

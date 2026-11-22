@@ -1,6 +1,6 @@
 {
-  "$schema": "https://hdox.org/schemas/v0.1/manifest.schema.json",
-  "hdox_version": "0.1.0",
+  "$schema": "https://hdox.org/schemas/v1.0/manifest.schema.json",
+  "hdox_version": "1.0.0",
   "id": "urn:uuid:9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
   "title": "Starter Report",
   "authors": ["Jane Doe"],

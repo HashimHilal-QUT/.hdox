@@ -1,11 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://hdox.org/schemas/v0.1/manifest.schema.json",
+  "$id": "https://hdox.org/schemas/v1.0/manifest.schema.json",
   "type": "object",
   "required": ["$schema", "hdox_version", "id", "title", "authors", "created_at", "modified_at", "language", "entrypoint", "page_setup", "security", "ai_metadata"],
   "properties": {
     "$schema": {"type": "string"},
-    "hdox_version": {"const": "0.1.0"},
+    "hdox_version": {"const": "1.0.0"},
     "id": {"type": "string"},
     "title": {"type": "string"},
     "authors": {"type": "array", "items": {"type": "string"}},

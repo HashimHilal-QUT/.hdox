@@ -83,6 +83,14 @@ def from_markdown(input_md: str | Path, output: str | Path) -> Path:
     manifest["ai_metadata"]["keywords"] = _as_str_list(meta.get("keywords"))
     if meta.get("summary") or meta.get("description"):
         manifest["ai_metadata"]["summary"] = str(meta.get("summary") or meta.get("description"))
+    reserved = {
+        "$schema", "hdox_version", "id", "title", "authors", "author", "created_at",
+        "modified_at", "language", "lang", "entrypoint", "page_setup", "security",
+        "ai_metadata", "keywords", "summary", "description",
+    }
+    for key, value in meta.items():
+        if key not in reserved:
+            manifest[key] = value
 
     import json
     with TemporaryDirectory() as tmp:

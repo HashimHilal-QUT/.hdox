@@ -16,7 +16,7 @@ from urllib.parse import unquote
 from zipfile import BadZipFile, ZIP_DEFLATED, ZIP_STORED, ZipFile, ZipInfo
 
 MIMETYPE = "application/vnd.hdox+zip"
-FORMAT_VERSION = "0.1.0"
+FORMAT_VERSION = "1.0.0"
 SCHEMA_PATH = Path(__file__).resolve().parent / "schema" / "manifest.schema.json"
 
 # Directories / files never packed into an archive.
@@ -97,7 +97,7 @@ def _html_text(html: str) -> str:
 def _default_manifest(title: str, text: str = "", language: str = "en") -> dict:
     now = _now()
     return {
-        "$schema": "https://hdox.org/schemas/v0.1/manifest.schema.json",
+        "$schema": "https://hdox.org/schemas/v1.0/manifest.schema.json",
         "hdox_version": FORMAT_VERSION,
         "id": f"urn:uuid:{uuid.uuid4()}",
         "title": title,
@@ -350,9 +350,9 @@ def validate(source: os.PathLike | str) -> ValidationResult:
             entry = manifest["entrypoint"]
             if entry not in names:
                 errors.append(f"entrypoint not found in archive: {entry}")
-        allow_net = False  # v0.1: external network access is never permitted
+        allow_net = False  # v1.0.0: external network access is never permitted
         if manifest and (manifest.get("security") or {}).get("allow_external_network"):
-            errors.append("security.allow_external_network is not supported in HDOX v0.1")
+            errors.append("security.allow_external_network is not supported in HDOX v1.0.0")
         allow_scripts = bool(manifest and (manifest.get("security") or {}).get("allow_scripts"))
 
         nameset = set(names)

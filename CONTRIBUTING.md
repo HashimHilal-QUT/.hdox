@@ -1,6 +1,6 @@
 # Contributing to .hdox
 
-Thanks for helping! HDOX is early (v0.1), so there is real room to shape the format and the tooling.
+Thanks for helping! HDOX v1.0.0 is ready for contributions to shape the format and the tooling.
 
 ## Setup (2 minutes)
 

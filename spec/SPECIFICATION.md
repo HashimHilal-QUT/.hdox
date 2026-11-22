@@ -1,4 +1,4 @@
-# `.hdox` File Format Specification v0.1
+# `.hdox` File Format Specification v1.0
 
 Status: draft. Keywords MUST, SHOULD and MAY are used as in RFC 2119.
 
@@ -32,7 +32,7 @@ Optional: `styles/`, `assets/` (images, fonts), and `signatures.json` (§6).
 
 ## 4. Manifest
 
-Required fields: `$schema`, `hdox_version` (`"0.1.0"`), `id`, `title`, `authors`, `created_at`,
+Required fields: `$schema`, `hdox_version` (`"1.0.0"`), `id`, `title`, `authors`, `created_at`,
 `modified_at`, `language`, `entrypoint`, `page_setup`, `security`, `ai_metadata`.
 Unknown fields are allowed and MUST be preserved by tools that rewrite manifests.
 
@@ -64,7 +64,7 @@ allowed (a hyperlink loads nothing). `javascript:` and other schemes are prohibi
 
 - Viewers MUST NOT execute scripts unless `security.allow_scripts` is `true`, and SHOULD render inside a sandbox.
   Validators warn on scripts and inline event handlers when scripts are disabled.
-- `security.allow_external_network` MUST be `false` in v0.1; validators reject `true`.
+- `security.allow_external_network` MUST be `false` in v1.0; validators reject `true`.
 - **Signatures** – `signatures.json` holds `{algorithm: "Ed25519", public_key, payload_hash, signature}`. The signed
   payload is the compact, key-sorted JSON map `{entry name: sha256 hex}` of every entry except `signatures.json`.
   Adding, removing or changing any entry invalidates the signature. A valid signature proves integrity
