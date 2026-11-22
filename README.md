@@ -93,7 +93,7 @@ Installing `.[pdf]` adds WeasyPrint and pypdf. WeasyPrint uses native GTK/Pango/
 On Windows, install the GTK3 x64 runtime with Winget, close and reopen PowerShell, activate the virtual environment again, and install the PDF extra:
 
 ```powershell
-winget install --id tschoonj.GTKForWindows -e --source winget
+winget install --id GtkD.GtkPlusRuntime.x64 -e --source winget
 ```
 
 Close PowerShell completely, open a new one, then from the repository root:
